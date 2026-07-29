@@ -1,0 +1,11 @@
+name = "deployah-dev"
+main = "src/index.ts"
+compatibility_date = "2026-07-29"
+
+routes = [
+  { pattern = "deployah.dev", custom_domain = true }
+]
+
+[[r2_buckets]]
+binding = "ASSETS"
+bucket_name = "deployah"
