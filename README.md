@@ -1,68 +1,50 @@
 # deployah.dev
 
-Cloudflare Worker for [deployah.dev](https://deployah.dev): Go module vanity
-import, demo GIFs, and JSON Schema hosting.
+Worker for [deployah.dev](https://deployah.dev): landing page, Go vanity
+import, demo movies, and JSON Schemas.
 
 ## What it serves
 
 | Path | Source | Purpose |
 | --- | --- | --- |
-| `/?go-get=1` or `/deployah?go-get=1` | Worker HTML | Vanity import for `deployah.dev/deployah` |
-| `/demos/*` | R2 bucket `deployah` | README / docs demo GIFs (e.g. `/demos/nginx.gif`) |
-| `/schemas/*` | R2 bucket `deployah` | Published JSON Schemas (matches schema `$id`) |
+| `/` and static files | Vite `dist/` | Landing, `og.png`, CSS, JS, `sitemap.xml`, `llms.txt` |
+| `/?go-get=1` | Worker HTML | Vanity import for `deployah.dev/deployah` |
+| `/demos/*` | R2 `deployah` (`MEDIA`) | Movies (e.g. `/demos/nginx.gif`) |
+| `/schemas/*` | R2 `deployah` (`MEDIA`) | JSON Schemas (path matches `$id`) |
 | everything else | 302 | [github.com/deployah-dev](https://github.com/deployah-dev) |
 
-R2 object keys match the URL path without the leading slash
-(`demos/nginx.gif`, `schemas/v1-alpha.2/manifest.json`, ...).
-
-## Layout (same idea as [nabat.dev](https://github.com/nabat-dev/nabat.dev))
-
-```text
-src/index.ts      Worker entry
-wrangler.toml     Routes + R2 binding
-package.json      wrangler scripts
-```
+The Worker runs first (`run_worker_first`) so `/?go-get=1` is not
+`index.html`. Unknown paths 302 to GitHub. R2 keys drop the leading
+slash (`demos/nginx.gif`, `schemas/v1-alpha.5/manifest.json`).
 
 ## Develop
 
+Nix (`flake.nix`). Allow `.envrc` if you use direnv.
+
 ```sh
+nix develop        # Node
+nix develop .#demo # plus deployah, VHS, ffmpeg
 npm install
-npm run dev
+npm run preview    # Vite landing
+npm run dev        # Worker + assets
 ```
 
 ## Deploy
 
-1. Create an R2 bucket named `deployah` in the Cloudflare account.
-2. Point the `deployah.dev` zone at this Worker (custom domain in `wrangler.toml`).
-3. Deploy:
+R2 bucket `deployah`. Custom domain in `wrangler.toml`. Then:
 
 ```sh
 npm run deploy
 ```
 
-## Uploading assets
+## Demos and schemas
 
-From the [deployah](https://github.com/deployah-dev/deployah) repo:
+Docker or Podman, then `nix run .#demo` and `nix run .#publish-demo`.
+See [demos/README.md](demos/README.md).
 
-```sh
-# Demo GIFs (after nix run .#demo)
-export R2_ACCESS_KEY_ID=...
-export R2_SECRET_ACCESS_KEY=...
-export R2_ENDPOINT_URL=...
-export R2_BUCKET=deployah
-export R2_DEST_PATH=demos/
-nix run .#publish-demo
-```
-
-Schemas should be synced under the `schemas/` prefix so they match Worker paths
-and the `$id` fields in the repo, for example:
-
-- `schemas/v1-alpha.2/manifest.json`
-- `schemas/v1-alpha.2/environments.json`
-- `schemas/platform/v1-alpha.1/platform.json`
-
-Then editors can use:
+Put schemas at `schemas/v1-alpha.5/manifest.json` (and the matching
+`$id`). Editors:
 
 ```yaml
-# $schema: https://deployah.dev/schemas/v1-alpha.2/manifest.json
+# $schema: https://deployah.dev/schemas/v1-alpha.5/manifest.json
 ```

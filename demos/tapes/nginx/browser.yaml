@@ -1,0 +1,3 @@
+# After the tape, Chromium types the Ingress URL from cluster status.
+# duration is seconds on the page after Enter.
+duration: 5

@@ -1,0 +1,635 @@
+@import "tailwindcss";
+
+@source "../index.html";
+
+@theme {
+  --color-ink: #0b0e14;
+  --color-charcoal: #151921;
+  --color-well: #07090c;
+  --color-line: #2a303c;
+  --color-hairline: rgb(255 255 255 / 8%);
+  --color-text: #e8eaed;
+  --color-muted: #9aa3ae;
+  --color-copper: #e08a4a;
+  --color-copper-hover: #f0a05c;
+  --color-on-copper: #1a1008;
+  --color-sand: #c4b8a8;
+  --font-sans: "Inter Variable", Inter, system-ui, sans-serif;
+  --font-display: "Geist Variable", Geist, Inter, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+  --radius-box: 0.5rem;
+  --breakpoint-desk: 56.25rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply m-0 bg-ink font-sans text-base leading-relaxed text-text;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  img {
+    display: block;
+  }
+
+  code,
+  pre,
+  .mono {
+    @apply font-mono;
+  }
+
+  h1,
+  h2,
+  h3,
+  .wordmark {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply mb-3 font-bold text-white;
+  }
+
+  h1 {
+    font-size: clamp(2.25rem, 5vw, 4.25rem);
+    font-weight: 800;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+
+  .laptop-copy h3 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  p {
+    @apply mb-4 text-muted;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  main {
+    @apply pt-12 pb-0;
+  }
+
+  section {
+    @apply mb-24 scroll-mt-20;
+  }
+}
+
+@layer components {
+  .skip {
+    @apply absolute top-0 z-[100] bg-copper px-4 py-2 text-on-copper;
+    left: -999px;
+  }
+
+  .skip:focus {
+    @apply top-2 left-2;
+  }
+
+  .wrap {
+    width: min(100% - 2rem, 72rem);
+    margin-inline: auto;
+  }
+
+  .wordmark {
+    @apply flex items-center gap-2 text-lg font-bold text-text no-underline;
+  }
+
+  .mark {
+    @apply size-3.5 bg-copper;
+    border-radius: 0.15rem;
+  }
+
+  .nav-toggle {
+    @apply inline-flex size-11 items-center justify-center rounded border border-line text-text sm:hidden;
+  }
+
+  .nav-toggle:hover,
+  .nav-toggle:focus-visible {
+    @apply border-text;
+  }
+
+  .nav-toggle .icon-close {
+    display: none;
+  }
+
+  .nav-toggle[aria-expanded="true"] .icon-open {
+    display: none;
+  }
+
+  .nav-toggle[aria-expanded="true"] .icon-close {
+    display: block;
+  }
+
+  .nav {
+    @apply flex items-center gap-3 sm:gap-6;
+    @apply max-sm:absolute max-sm:top-full max-sm:right-0 max-sm:z-30 max-sm:mt-2 max-sm:hidden max-sm:min-w-52 max-sm:flex-col max-sm:items-stretch max-sm:gap-1 max-sm:rounded-box max-sm:border max-sm:border-line max-sm:bg-charcoal max-sm:p-2;
+  }
+
+  .nav:popover-open {
+    @apply max-sm:flex;
+    inset: auto;
+    top: 4.5rem;
+    right: 1rem;
+    margin: 0;
+  }
+
+  .nav a {
+    @apply text-[0.85rem] text-muted no-underline sm:text-[0.95rem];
+    @apply max-sm:flex max-sm:min-h-11 max-sm:items-center max-sm:rounded max-sm:px-3;
+  }
+
+  .nav a:hover {
+    @apply text-text;
+  }
+
+  .nav .cta-outline {
+    @apply rounded border border-copper px-3.5 py-1.5 font-bold text-copper;
+    @apply max-sm:mt-1 max-sm:justify-center;
+  }
+
+  .nav .cta-outline:hover {
+    @apply text-text;
+    background: rgb(224 138 74 / 10%);
+  }
+
+  .eyebrow {
+    @apply mb-3 inline-block text-[0.8rem] font-semibold tracking-[0.12em] text-copper uppercase;
+  }
+
+  .eyebrow.pill {
+    @apply rounded-full border border-copper/30 px-3 py-1;
+  }
+
+  .lead {
+    @apply max-w-xl text-xl;
+  }
+
+  .hero {
+    @apply grid grid-cols-1 items-center gap-10 desk:grid-cols-2;
+  }
+
+  .hero-copy {
+    @apply max-w-3xl;
+  }
+
+  .hero-demo {
+    @apply m-0;
+  }
+
+  .hero-demo-open {
+    @apply relative block w-full cursor-pointer overflow-hidden rounded-box border border-line bg-charcoal p-0 text-left;
+  }
+
+  .hero-demo-open:hover,
+  .hero-demo-open:focus-visible {
+    @apply border-text;
+  }
+
+  .hero-demo-open img {
+    @apply w-full;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .hero-demo-play {
+    @apply pointer-events-none absolute inset-0 grid place-items-center;
+  }
+
+  .hero-demo-play svg {
+    @apply size-14 rounded-full bg-copper p-4 text-on-copper;
+  }
+
+  .hero-demo-open:hover .hero-demo-play svg,
+  .hero-demo-open:focus-visible .hero-demo-play svg {
+    @apply bg-copper-hover;
+  }
+
+  .hero-demo figcaption {
+    @apply mt-3 mb-0 text-[0.8rem] text-muted;
+  }
+
+  .hero-demo-dialog {
+    /* Tailwind preflight sets margin: 0, which kills UA dialog centering. */
+    position: fixed;
+    inset: unset;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    margin: 0;
+    height: fit-content;
+    width: min(100% - 2rem, 72rem);
+    max-height: calc(100dvh - 2rem);
+    padding: 0;
+    overflow: auto;
+    border: 1px solid var(--color-line);
+    background: var(--color-charcoal);
+    border-radius: var(--radius-box);
+    color: var(--color-text);
+  }
+
+  .hero-demo-dialog::backdrop {
+    background: rgb(11 14 20 / 80%);
+  }
+
+  .hero-demo-dialog-bar {
+    @apply flex justify-end border-b border-line px-3 py-2;
+  }
+
+  .hero-demo-dialog-close {
+    @apply cursor-pointer rounded border border-line bg-transparent px-2 py-1 text-xs text-muted;
+  }
+
+  .hero-demo-dialog-close:hover,
+  .hero-demo-dialog-close:focus-visible {
+    @apply border-text text-text;
+  }
+
+  .hero-demo-video {
+    @apply block w-full bg-well;
+    aspect-ratio: 16 / 9;
+    height: auto;
+  }
+
+  .laptop {
+    @apply grid grid-cols-1 items-center gap-10 desk:grid-cols-2;
+  }
+
+  .laptop-shot {
+    @apply relative m-0 overflow-hidden rounded-box border border-line bg-charcoal desk:col-start-2;
+  }
+
+  .laptop-copy {
+    @apply desk:col-start-1 desk:row-start-1;
+  }
+
+  .laptop-flip .laptop-shot {
+    @apply desk:col-start-1;
+  }
+
+  .laptop-flip .laptop-copy {
+    @apply desk:col-start-2;
+  }
+
+  .laptop + .laptop {
+    @apply mt-16;
+  }
+
+  .laptop-shot img,
+  .laptop-shot video {
+    @apply block w-full;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .laptop-loop {
+    @apply absolute inset-0 size-full;
+  }
+
+  .laptop-loop:not(.is-playing) {
+    visibility: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .laptop-shot video.laptop-loop {
+      display: none;
+    }
+  }
+
+  .laptop-cmd {
+    @apply mt-6 mb-3 text-sm text-white;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center rounded px-6 py-3.5 font-bold no-underline;
+  }
+
+  .btn-primary {
+    @apply bg-copper text-on-copper;
+  }
+
+  .btn-primary:hover {
+    @apply bg-copper-hover;
+  }
+
+  .btn-ghost {
+    @apply border border-muted text-text;
+  }
+
+  .btn-ghost:hover {
+    @apply border-text;
+  }
+
+  .prompt {
+    @apply text-copper;
+  }
+
+  .caption {
+    @apply border-t border-line bg-well px-5 py-3.5 text-[0.8rem] text-muted;
+  }
+
+  .card {
+    @apply rounded-box border border-line bg-charcoal px-6 py-5;
+  }
+
+  .card.quiet {
+    @apply border-hairline;
+  }
+
+  .claim {
+    @apply flex flex-col gap-2 font-medium text-white;
+  }
+
+  .claim-who {
+    @apply text-[0.7rem] font-semibold tracking-wider text-muted uppercase;
+  }
+
+  .well-frame {
+    @apply flex flex-col overflow-hidden rounded-box border border-line;
+  }
+
+  .well-frame .file-label {
+    @apply mb-0 flex flex-col gap-0.5 border-b border-line bg-charcoal px-5 py-2.5;
+  }
+
+  .file-owner {
+    @apply text-[0.7rem] font-semibold tracking-wider text-muted uppercase;
+  }
+
+  .well-frame .well {
+    @apply flex-1 rounded-none border-0;
+  }
+
+  .well-frame .caption {
+    @apply mt-auto mb-0;
+  }
+
+  .well-frame .caption a {
+    @apply text-sand no-underline;
+  }
+
+  .well-frame .caption a:hover,
+  .well-frame .caption a:focus-visible {
+    @apply text-text underline;
+  }
+
+  .file-label {
+    @apply mb-2 text-sm font-semibold text-copper;
+  }
+
+  .well {
+    @apply overflow-x-auto rounded-box border border-line bg-well px-6 py-5 text-[0.8125rem] leading-7 text-gray-300;
+  }
+
+  .well:focus-visible,
+  .copy-well code:focus-visible {
+    @apply border-text outline-none;
+  }
+
+  .well pre {
+    @apply m-0 whitespace-pre;
+  }
+
+  .key {
+    @apply text-sand;
+  }
+
+  .val {
+    @apply text-text;
+  }
+
+  .lit {
+    @apply text-copper;
+  }
+
+  .compare-list {
+    --compare-max: 340;
+    @apply mt-4 mb-0 flex list-none flex-col gap-5 p-0;
+  }
+
+  .compare-row {
+    @apply grid items-baseline gap-x-4 gap-y-2;
+    grid-template-columns: 8.5rem 1fr;
+  }
+
+  .compare-row.has-bar {
+    @apply items-center;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "name meta"
+      "track track";
+  }
+
+  .compare-row.has-bar .compare-name {
+    grid-area: name;
+  }
+
+  .compare-row.has-bar .compare-meta {
+    grid-area: meta;
+  }
+
+  .compare-row.has-bar .compare-track {
+    grid-area: track;
+  }
+
+  @media (min-width: 40rem) {
+    .compare-row.has-bar {
+      grid-template-columns: 8.5rem 1fr 12rem;
+      grid-template-areas: "name track meta";
+    }
+
+    .compare-row.has-bar .compare-meta {
+      justify-self: end;
+      text-align: right;
+    }
+  }
+
+  .compare-name {
+    @apply font-medium text-white;
+  }
+
+  .compare-meta {
+    @apply text-sm text-muted;
+  }
+
+  .compare-track {
+    @apply h-3 overflow-hidden rounded-sm bg-well;
+  }
+
+  .compare-bar {
+    @apply block h-full rounded-sm bg-line;
+    width: calc(var(--n) * 100% / var(--compare-max));
+    min-width: 0.25rem;
+  }
+
+  .compare-bar-own {
+    @apply bg-copper;
+  }
+
+  .note {
+    @apply mt-3 mb-0 text-xs text-muted;
+  }
+
+  .note a {
+    @apply text-sand no-underline;
+  }
+
+  .note a:hover,
+  .note a:focus-visible {
+    @apply text-text underline;
+  }
+
+  .cmd .mono {
+    @apply text-sm text-white;
+  }
+
+  .cmd p {
+    @apply mt-1.5 mb-0 text-sm;
+  }
+
+  .pill {
+    @apply shrink-0 rounded border border-copper/30 bg-copper/10 px-1.5 py-0.5 text-[0.625rem] font-medium tracking-wider text-copper uppercase;
+  }
+
+  .fine {
+    @apply mb-0 text-xs text-muted;
+  }
+
+  .fine code {
+    @apply rounded border border-line bg-charcoal px-1.5 py-0.5 font-mono text-[0.7rem] text-text;
+  }
+
+  .install-band {
+    @apply mb-0 border-t border-line bg-charcoal py-16;
+  }
+
+  .install-band .fine code {
+    @apply bg-well;
+  }
+
+  .install-tabs {
+    @apply mb-2 flex min-w-0 flex-wrap gap-1 border-0 p-0;
+  }
+
+  .install-tabs input {
+    @apply sr-only;
+  }
+
+  .install-tabs label {
+    @apply cursor-pointer rounded border border-transparent bg-transparent px-3 py-1.5 text-sm font-semibold text-muted;
+  }
+
+  .install-tabs label:hover,
+  .install-tabs label:has(:focus-visible) {
+    @apply text-text;
+  }
+
+  .install-tabs label:has(:checked) {
+    @apply border-line bg-well text-copper;
+  }
+
+  .copy-well {
+    @apply flex items-start justify-between gap-3;
+  }
+
+  .copy-well code {
+    @apply min-w-0 flex-1 overflow-x-auto font-mono text-white;
+  }
+
+  .copy {
+    @apply shrink-0 cursor-pointer rounded border border-line bg-transparent px-2 py-1 text-xs text-muted;
+  }
+
+  .copy:hover,
+  .copy:focus-visible {
+    @apply border-text text-text;
+  }
+
+  .site-footer {
+    @apply border-t border-charcoal bg-well py-10;
+  }
+
+  .footer-top {
+    @apply flex flex-col gap-6 border-b border-line pb-6 sm:flex-row sm:items-start sm:justify-between;
+  }
+
+  .footer-tag {
+    @apply mt-2 mb-0 text-sm text-muted;
+  }
+
+  .footer-nav {
+    @apply flex flex-wrap gap-6;
+  }
+
+  .site-footer nav a {
+    @apply text-sm text-muted no-underline;
+  }
+
+  .site-footer nav a:hover,
+  .site-footer nav a:focus-visible {
+    @apply text-text;
+  }
+
+  .footer-bottom {
+    @apply mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between;
+  }
+
+  .footer-legal {
+    @apply mb-0 flex flex-col gap-2 text-xs text-muted;
+  }
+
+  .footer-marks {
+    @apply flex flex-col gap-2 sm:items-end;
+  }
+
+  .footer-trademark {
+    @apply mb-0 text-xs text-muted sm:text-right;
+  }
+
+  .footer-legal a {
+    @apply text-sand no-underline;
+  }
+
+  .footer-legal a:hover,
+  .footer-legal a:focus-visible {
+    @apply text-text underline;
+  }
+
+  .lockups a {
+    @apply flex items-center gap-1.5 text-xs text-muted no-underline;
+  }
+
+  .lockups a:hover,
+  .lockups a:focus-visible {
+    @apply text-white;
+  }
+
+  .lockups img {
+    @apply size-4;
+  }
+}

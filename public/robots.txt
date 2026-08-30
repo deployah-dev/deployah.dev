@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://deployah.dev/sitemap.xml

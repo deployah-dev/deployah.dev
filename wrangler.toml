@@ -6,6 +6,12 @@ routes = [
   { pattern = "deployah.dev", custom_domain = true }
 ]
 
-[[r2_buckets]]
+# Worker runs first so /?go-get=1 is not served as index.html.
+[assets]
+directory = "./dist"
 binding = "ASSETS"
+run_worker_first = true
+
+[[r2_buckets]]
+binding = "MEDIA"
 bucket_name = "deployah"

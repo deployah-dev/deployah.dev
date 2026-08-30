@@ -1,0 +1,8 @@
+# Demo-only Starship. One line so Wait /λ/ matches and the wells stay readable.
+# Do not point STARSHIP_CONFIG at ~/.config/starship.toml.
+add_newline = false
+format = "$character"
+
+[character]
+success_symbol = "[λ](bold green)"
+error_symbol = "[λ](bold red)"

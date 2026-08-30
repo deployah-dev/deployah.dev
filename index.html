@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deployah, Spec-to-Release for Kubernetes</title>
+  <meta name="description" content="Deploy apps to Kubernetes from a short spec. One binary. No Helm chart to maintain. Nothing to install in the cluster. You get a real Helm release.">
+  <link rel="canonical" href="https://deployah.dev/">
+  <link rel="describedby" href="https://deployah.dev/llms.txt">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://deployah.dev/">
+  <meta property="og:title" content="Deployah, Spec-to-Release for Kubernetes">
+  <meta property="og:description" content="Deploy apps to Kubernetes from a short spec. One binary. No Helm chart to maintain. Nothing to install in the cluster. You get a real Helm release.">
+  <meta property="og:image" content="https://deployah.dev/og.png">
+  <meta property="og:image:alt" content="Deployah CLI: plan, deploy, and a Ready release in a terminal">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Deployah, Spec-to-Release for Kubernetes">
+  <meta name="twitter:description" content="Deploy apps to Kubernetes from a short spec. One binary. No Helm chart to maintain. Nothing to install in the cluster. You get a real Helm release.">
+  <meta name="twitter:image" content="https://deployah.dev/og.png">
+  <meta name="twitter:image:alt" content="Deployah CLI: plan, deploy, and a Ready release in a terminal">
+  <meta name="theme-color" content="#0b0e14">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='2' fill='%23E08A4A'/%3E%3C/svg%3E">
+  <script type="module" src="/src/main.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="sticky top-0 z-20 border-b border-charcoal bg-ink">
+    <div class="wrap relative flex items-center justify-between gap-4 py-3 sm:py-4">
+      <a class="wordmark" href="/">
+        <span class="mark" aria-hidden="true"></span>
+        Deployah
+      </a>
+      <button type="button" class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Open menu">
+        <svg class="icon-open" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <path d="M3 5h12M3 9h12M3 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <svg class="icon-close" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <nav id="primary-nav" class="nav" aria-label="Primary">
+        <a href="https://github.com/deployah-dev/deployah/tree/main/docs">Docs</a>
+        <a href="https://github.com/deployah-dev/deployah">GitHub</a>
+        <a class="cta-outline" href="#install">Install</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow pill">Spec-to-Release for Kubernetes</p>
+          <h1 id="hero-title">Deploy apps to Kubernetes from a short spec</h1>
+          <p class="lead">One binary. No Helm chart to maintain. Nothing to install in the cluster. You get a real Helm release.</p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a class="btn btn-primary" href="#install">Install the CLI</a>
+            <a class="btn btn-ghost" href="https://github.com/deployah-dev/deployah/tree/main/docs">Docs</a>
+          </div>
+          <p class="mt-4 text-sm">Apache 2.0. No vendor lock-in. You bring the cluster and the image.</p>
+        </div>
+        <figure class="hero-demo">
+          <button
+            type="button"
+            class="hero-demo-open"
+            aria-haspopup="dialog"
+            aria-controls="hero-demo-dialog"
+            aria-label="Play demo: nginx spec, plan, deploy, and the app in a browser"
+          >
+            <img src="/demos/nginx.jpg" alt="" width="1920" height="1080">
+            <span class="hero-demo-play" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <path d="M8 5.5v11l10-5.5-10-5.5z" fill="currentColor"/>
+              </svg>
+            </span>
+          </button>
+          <figcaption>Spec, plan, deploy, then the app in a browser.</figcaption>
+        </figure>
+      </section>
+
+      <dialog
+        id="hero-demo-dialog"
+        class="hero-demo-dialog"
+        aria-label="Demo: nginx spec, plan, deploy, and the app in a browser"
+      >
+        <form method="dialog" class="hero-demo-dialog-bar">
+          <button type="submit" class="hero-demo-dialog-close">Close</button>
+        </form>
+        <video
+          class="hero-demo-video"
+          controls
+          playsinline
+          preload="none"
+          width="1920"
+          height="1080"
+        >
+          <source src="/demos/nginx-captioned.mp4" type="video/mp4">
+        </video>
+      </dialog>
+
+      <section aria-labelledby="pain-title">
+        <p class="eyebrow">Why this exists</p>
+        <h2 id="pain-title">The Kubernetes work moves.</h2>
+        <ul class="m-0 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 desk:grid-cols-3">
+          <li class="card claim">
+            <span class="claim-who">In the app repo</span>
+            A Helm chart sits next to the code. You own the templates.
+          </li>
+          <li class="card claim">
+            <span class="claim-who">On every developer</span>
+            They write Helm values, or the whole chart.
+          </li>
+          <li class="card claim">
+            <span class="claim-who">In the cluster</span>
+            You install a server and a UI into Kubernetes, then keep that running.
+          </li>
+        </ul>
+        <p class="mt-4">Deployah keeps that work out of all three.</p>
+        <p class="note mt-4"><a href="https://www.spectrocloud.com/">Spectro Cloud</a>: 92% agree developers should not manage infrastructure. One in three say they still build their own clusters. <a href="https://www.spectrocloud.com/news/spectro-cloud-report-reveals-top-trends-in-kubernetes-for-2024">[ref]</a></p>
+      </section>
+
+      <section aria-labelledby="files-title">
+        <p class="eyebrow">Ownership</p>
+        <h2 id="files-title">Two files, two owners.</h2>
+        <p>App teams own what to run. Platform owns where it runs.</p>
+        <div class="grid grid-cols-1 gap-4 desk:grid-cols-2">
+          <div class="well-frame">
+            <div class="file-label" id="spec-file">
+              <span class="file-owner">App team</span>
+              <span class="mono">deployah.yaml</span>
+            </div>
+            <div class="well" role="region" aria-labelledby="spec-file" tabindex="0">
+              <pre><code><span class="key">apiVersion</span>: <span class="val">v1-alpha.5</span>
+<span class="key">project</span>: <span class="val">my-app</span>
+<span class="key">components</span>:
+  <span class="key">web</span>:
+    <span class="key">image</span>: <span class="val">nginx:1.26</span>
+    <span class="key">port</span>: <span class="lit">80</span>
+    <span class="key">expose</span>: <span class="lit">true</span></code></pre>
+            </div>
+            <p class="caption"><a href="https://github.com/deployah-dev/deployah/blob/main/docs/spec-reference.md">Full spec</a></p>
+          </div>
+          <div class="well-frame">
+            <div class="file-label" id="platform-file">
+              <span class="file-owner">Platform</span>
+              <span class="mono">deployah.platform.yaml</span>
+            </div>
+            <div class="well" role="region" aria-labelledby="platform-file" tabindex="0">
+              <pre><code><span class="key">apiVersion</span>: <span class="val">platform/v1-alpha.3</span>
+<span class="key">environments</span>:
+  <span class="key">production</span>:
+    <span class="key">context</span>: <span class="val">prod-eks</span>
+    <span class="key">domains</span>:
+      <span class="key">public</span>:
+        <span class="key">baseDomain</span>: <span class="val">example.com</span>
+        <span class="key">tls</span>:
+          <span class="key">mode</span>: <span class="val">certManager</span>
+          <span class="key">issuer</span>: <span class="val">letsencrypt-prod</span></code></pre>
+            </div>
+            <p class="caption"><a href="https://github.com/deployah-dev/deployah/blob/main/docs/platform.md">Full platform file</a></p>
+          </div>
+        </div>
+        <p class="fine mt-3">These apiVersions are alpha. Expect breaking changes between releases.</p>
+      </section>
+
+      <section aria-labelledby="proof-title">
+        <p class="eyebrow">Proof</p>
+        <h2 id="proof-title"><span class="text-copper">20x</span> less YAML you own</h2>
+        <p>Nginx 1.26, public HTTPS. Same Deployment, Service, Ingress, and probes. <a class="text-sand no-underline hover:text-text hover:underline focus-visible:text-text focus-visible:underline" href="https://github.com/deployah-dev/deployah/tree/main/examples/yaml-owned">[ref]</a></p>
+        <ul class="compare-list">
+          <li class="compare-row has-bar" style="--n: 17">
+            <span class="compare-name">Deployah</span>
+            <span class="compare-track" aria-hidden="true"><span class="compare-bar compare-bar-own"></span></span>
+            <span class="compare-meta">17 lines</span>
+          </li>
+          <li class="compare-row has-bar" style="--n: 135">
+            <span class="compare-name">Kubernetes</span>
+            <span class="compare-track" aria-hidden="true"><span class="compare-bar"></span></span>
+            <span class="compare-meta">135 lines, 3 objects</span>
+          </li>
+          <li class="compare-row has-bar" style="--n: 145">
+            <span class="compare-name">Kustomize</span>
+            <span class="compare-track" aria-hidden="true"><span class="compare-bar"></span></span>
+            <span class="compare-meta">145 lines, base and overlay</span>
+          </li>
+          <li class="compare-row has-bar" style="--n: 340">
+            <span class="compare-name">Helm</span>
+            <span class="compare-track" aria-hidden="true"><span class="compare-bar"></span></span>
+            <span class="compare-meta">340 lines, a chart</span>
+          </li>
+        </ul>
+        <p class="fine mt-3">20x is against the Helm chart. The other two are near 8x.</p>
+        <p class="note mt-4"><a href="https://www.cncf.io/">CNCF</a>: 75% prefer Helm for packaging Kubernetes apps. We ship a Helm release. The chart is what you stop owning. <a href="https://www.cncf.io/reports/cncf-annual-survey-2024/">[ref]</a></p>
+      </section>
+
+      <section aria-labelledby="plan-title">
+        <p class="eyebrow">Plan</p>
+        <div class="laptop">
+          <figure class="laptop-shot">
+            <img
+              class="laptop-still"
+              src="/demos/plan.jpg"
+              alt="deployah plan: first install, then a resources change as YAML"
+              width="960"
+              height="540"
+              loading="lazy"
+            >
+            <video
+              class="laptop-loop"
+              muted
+              loop
+              playsinline
+              preload="none"
+              poster="/demos/plan.jpg"
+              width="960"
+              height="540"
+              aria-label="Plan for a first install, then a resources change as YAML"
+            >
+              <source src="/demos/plan.mp4" type="video/mp4">
+            </video>
+          </figure>
+          <div class="laptop-copy">
+            <h2 id="plan-title">Plan before apply. Same CLI in CI.</h2>
+            <div class="laptop-cmd mono"><span class="prompt">$</span> deployah plan local</div>
+            <p>Same binary on your laptop and in a CI/CD pipeline. Broken paths, bad probes, and task cycles fail before apply.</p>
+            <p class="fine">--detailed-exitcode exits 2 when something would change.</p>
+          </div>
+        </div>
+        <p class="note mt-4"><a href="https://www.redhat.com/">Red Hat</a>: 40% of teams detected a Kubernetes or container misconfiguration in 12 months. We stop the classes we test, before apply. <a href="https://www.redhat.com/en/resources/kubernetes-adoption-security-market-trends-overview">[ref]</a></p>
+      </section>
+
+      <section aria-labelledby="laptop-title">
+        <p class="eyebrow">Local</p>
+        <div class="laptop laptop-flip">
+          <figure class="laptop-shot">
+            <img
+              class="laptop-still"
+              src="/demos/cluster.jpg"
+              alt="Local cluster Ready after deployah cluster up"
+              width="960"
+              height="540"
+              loading="lazy"
+            >
+            <video
+              class="laptop-loop"
+              muted
+              loop
+              playsinline
+              preload="none"
+              poster="/demos/cluster.jpg"
+              width="960"
+              height="540"
+              aria-label="cluster up creating a Kind cluster, then cluster status"
+            >
+              <source src="/demos/cluster.mp4" type="video/mp4">
+            </video>
+          </figure>
+          <div class="laptop-copy">
+            <h2 id="laptop-title">A cluster on your laptop.</h2>
+            <div class="laptop-cmd mono"><span class="prompt">$</span> deployah cluster up</div>
+            <p>Needs Docker or Podman. That is the only extra tool.</p>
+            <p class="fine">Warm is about 35 seconds. Cold is about five minutes.</p>
+            <p class="fine mt-2">Already have a cluster? Set the environment's kube context. Same spec.</p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="after-title">
+        <p class="eyebrow">After deploy</p>
+        <h2 id="after-title">Logs and a shell take the project name.</h2>
+        <div class="laptop">
+          <figure class="laptop-shot">
+            <img
+              class="laptop-still"
+              src="/demos/logs.jpg"
+              alt="Two pods logging under deployah logs"
+              width="960"
+              height="540"
+              loading="lazy"
+            >
+            <video
+              class="laptop-loop"
+              muted
+              loop
+              playsinline
+              preload="none"
+              poster="/demos/logs.jpg"
+              width="960"
+              height="540"
+              aria-label="Tailing logs from two pods in the same project"
+            >
+              <source src="/demos/logs.mp4" type="video/mp4">
+            </video>
+          </figure>
+          <div class="laptop-copy">
+            <h3 id="logs-title">Every pod's logs.</h3>
+            <div class="laptop-cmd mono"><span class="prompt">$</span> deployah logs my-app</div>
+            <p>It tails every pod. Filter with --component if you want one.</p>
+          </div>
+        </div>
+        <div class="laptop laptop-flip">
+          <figure class="laptop-shot">
+            <img
+              class="laptop-still"
+              src="/demos/shell.jpg"
+              alt="Component picker for deployah shell"
+              width="960"
+              height="540"
+              loading="lazy"
+            >
+            <video
+              class="laptop-loop"
+              muted
+              loop
+              playsinline
+              preload="none"
+              poster="/demos/shell.jpg"
+              width="960"
+              height="540"
+              aria-label="Picking a component, then hostname in the container"
+            >
+              <source src="/demos/shell.mp4" type="video/mp4">
+            </video>
+          </figure>
+          <div class="laptop-copy">
+            <h3 id="shell-title">A shell in the container.</h3>
+            <div class="laptop-cmd mono"><span class="prompt">$</span> deployah shell my-app</div>
+            <p>Finds a shell in the container. Multiple components show a list. Or pass --component.</p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="cmds-title">
+        <p class="eyebrow">Commands</p>
+        <h2 id="cmds-title">Everything runs from a single binary.</h2>
+        <p>No separate helm, kubectl, or kind to install.</p>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div class="card cmd">
+            <div class="mono"><span class="prompt">$</span> deployah init</div>
+            <p>Creates the spec and platform file.</p>
+          </div>
+          <div class="card cmd">
+            <div class="mono"><span class="prompt">$</span> deployah deploy local</div>
+            <p>Install or upgrade the Helm release.</p>
+          </div>
+          <div class="card cmd">
+            <div class="mono"><span class="prompt">$</span> deployah plan production</div>
+            <p>Shows a diff against the last release. --offline renders and validates with no cluster.</p>
+          </div>
+          <div class="card cmd">
+            <div class="mono"><span class="prompt">$</span> deployah run migrate production</div>
+            <p>Runs a spec task as a Job. Tasks can also run on every deploy.</p>
+          </div>
+          <div class="card cmd">
+            <div class="mono"><span class="prompt">$</span> deployah status my-app</div>
+            <p>What is deployed in an environment.</p>
+          </div>
+          <div class="card cmd">
+            <div class="mono"><span class="prompt">$</span> deployah delete my-app production</div>
+            <p>Removes the release. Check it first with --dry-run.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section id="install" class="install-band" aria-labelledby="install-title">
+      <div class="wrap">
+        <h2 id="install-title">Install the CLI.</h2>
+        <div class="install-pick">
+          <fieldset class="install-tabs" aria-label="Install method">
+            <label>
+              <input
+                type="radio"
+                name="install"
+                value="homebrew"
+                checked
+                data-cmd="brew install deployah-dev/tap/deployah"
+                data-copy-label="Copy Homebrew install command"
+              >
+              Homebrew
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="install"
+                value="nix"
+                data-cmd="nix run github:deployah-dev/deployah"
+                data-copy-label="Copy Nix install command"
+              >
+              Nix
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="install"
+                value="go"
+                data-cmd="go install deployah.dev/deployah@latest"
+                data-copy-label="Copy Go install command"
+              >
+              Go
+            </label>
+          </fieldset>
+          <div class="well copy-well" id="install-panel">
+            <code tabindex="0"><span class="prompt">$</span> <span data-install-cmd>brew install deployah-dev/tap/deployah</span></code>
+            <button type="button" class="copy" data-clipboard-text="brew install deployah-dev/tap/deployah" aria-label="Copy Homebrew install command">Copy</button>
+          </div>
+        </div>
+        <p class="fine mt-3">Then run <code><span class="prompt">$</span> deployah init</code>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <div>
+          <a class="wordmark" href="/">
+            <span class="mark" aria-hidden="true"></span>
+            Deployah
+          </a>
+          <p class="footer-tag">Spec-to-Release for Kubernetes</p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer">
+          <a href="https://github.com/deployah-dev/deployah/tree/main/docs">Docs</a>
+          <a href="https://github.com/deployah-dev/deployah/discussions">Discussions</a>
+          <a href="https://github.com/deployah-dev/deployah">GitHub</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-legal">
+          <span>&copy; 2026 Deployah Authors and Contributors.</span>
+          <span>Licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>.</span>
+        </p>
+        <div class="footer-marks">
+          <div class="lockups flex items-center gap-6">
+            <a href="https://kubernetes.io">
+              <img src="/icons/kubernetes.svg" width="16" height="16" alt="">
+              Kubernetes
+            </a>
+            <a href="https://helm.sh">
+              <img src="/icons/helm.svg" width="16" height="16" alt="">
+              Helm
+            </a>
+          </div>
+          <p class="footer-trademark">Kubernetes and Helm are trademarks of The Linux Foundation.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

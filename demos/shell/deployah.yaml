@@ -1,0 +1,11 @@
+apiVersion: v1-alpha.5
+project: app
+components:
+  web:
+    image: nginx:1.26
+    port: 80
+    environments: [local]
+  worker:
+    role: worker
+    image: nginx:1.26
+    environments: [local]

@@ -1,0 +1,33 @@
+# Deployah
+
+> Deploy apps to Kubernetes from a short spec. One binary. No Helm chart to maintain. Nothing to install in the cluster. You get a real Helm release.
+
+The CLI embeds Helm and a Kubernetes client. App teams own deployah.yaml (apiVersion v1-alpha.5). Platform owns deployah.platform.yaml (apiVersion platform/v1-alpha.3). Both are alpha; expect breaking changes. Docs are markdown in the CLI repo. Fetch the raw files linked below.
+
+Install:
+
+- Homebrew: `brew install deployah-dev/tap/deployah`
+- Nix: `nix run github:deployah-dev/deployah`
+- Go: `go install deployah.dev/deployah@latest`
+
+Then run `deployah init`.
+
+## Docs
+
+- [Spec reference](https://raw.githubusercontent.com/deployah-dev/deployah/main/docs/spec-reference.md): deployah.yaml fields
+- [Platform file](https://raw.githubusercontent.com/deployah-dev/deployah/main/docs/platform.md): environments, domains, TLS
+- [CLI](https://raw.githubusercontent.com/deployah-dev/deployah/main/docs/cli/deployah.md): commands
+- [Workloads](https://raw.githubusercontent.com/deployah-dev/deployah/main/docs/workloads.md): services and workers
+- [Networking](https://raw.githubusercontent.com/deployah-dev/deployah/main/docs/networking.md): expose, Ingress, TLS
+- [Tasks](https://raw.githubusercontent.com/deployah-dev/deployah/main/docs/tasks.md): Jobs and run-on-deploy
+- [Repo README](https://raw.githubusercontent.com/deployah-dev/deployah/main/README.md): install and a first deploy
+
+## Schemas
+
+- [Spec schema](https://deployah.dev/schemas/v1-alpha.5/manifest.json)
+- [Platform schema](https://deployah.dev/schemas/platform/v1-alpha.3/platform.json)
+
+## Optional
+
+- [YAML-owned example](https://raw.githubusercontent.com/deployah-dev/deployah/main/examples/yaml-owned/README.md): line counts behind the 20x claim
+- [Website](https://deployah.dev/): landing page
