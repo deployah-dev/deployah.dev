@@ -63,14 +63,20 @@ Show
 Type "deployah plan local"
 Enter
 Wait /λ/
-Sleep 4s
+Sleep 2s
+# Same first-install plan as the plan well: about 190 lines.
+# Scroll to the header, hold, then return to the summary.
+ScrollUp@40ms 180
+Sleep 3s
+ScrollDown@40ms 180
+Sleep 2s
 Hide
 Type "clear"
 Enter
 Wait /λ/
 Show
 
-Type "deployah deploy local --yes"
+Type "deployah deploy local"
 Enter
 Wait /λ/
 Sleep 3.5s

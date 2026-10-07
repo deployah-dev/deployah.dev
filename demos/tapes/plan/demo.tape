@@ -40,9 +40,15 @@ Show
 Type "deployah plan local"
 Enter
 Wait /λ/
-Sleep 4s
+Sleep 2s
+# First-install plan is about 190 lines, so 12 rows never leaves the
+# last resource. Scroll to the header, hold, then return to the summary.
+ScrollUp@40ms 180
+Sleep 3s
+ScrollDown@40ms 180
+Sleep 2s
 Hide
-Type "deployah deploy local --yes"
+Type "deployah deploy local"
 Enter
 Wait /λ/
 Type "clear"
@@ -73,7 +79,7 @@ Enter
 Wait /λ/
 Show
 
-Type "deployah plan local --yaml"
+Type "deployah plan local"
 Enter
 Wait /λ/
 Sleep 16s

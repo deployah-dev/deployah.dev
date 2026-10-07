@@ -71,7 +71,7 @@ for tape in "${tapes[@]}"; do
     # VHS runs in its own sandbox. Chromium on the host needs the
     # release on the host Kind cluster, so deploy again after the tape.
     echo "Deploying $name on the host cluster for the browser shot ..."
-    (cd "$fixture" && deployah deploy local --yes)
+    (cd "$fixture" && deployah deploy local)
     url=""
     for _ in $(seq 1 45); do
       url="$(deployah cluster status -o json | jq -r '[.access[]? | select(.kind == "Ingress" and (.url // "") != "")] | .[0].url // empty')"

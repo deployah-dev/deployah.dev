@@ -8,10 +8,10 @@ captions:
     end: 10.0
     text: Platform owns where it runs
   - start: 11.3
-    end: 15.0
+    end: 24.0
     text: Plan before apply
-  - start: 22.8
-    end: 26.2
+  - start: 42.0
+    end: 45.3
     text: Deployed
 
 # Seconds from the start of the Chromium shot (concatenated after VHS).

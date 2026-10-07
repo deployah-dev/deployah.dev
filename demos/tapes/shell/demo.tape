@@ -29,7 +29,7 @@ Wait /λ/
 Type `export COLUMNS=80`
 Enter
 Wait /λ/
-Type "deployah deploy local --yes"
+Type "deployah deploy local"
 Enter
 Wait /λ/
 Type "clear"
